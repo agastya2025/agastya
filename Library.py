@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 import jwt
-
+from starlette.responses  import RedirectResponse
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -156,6 +156,10 @@ class LoanResponse(LoanBase):
         orm_mode:True
 
 #API endpoints
+
+@app.get("/")
+def read_root():
+    return RedirectResponse('/docs')
 
 @app.post("/users", response_model=UserResponse)
 def create_user(user:UserCreate, db: Session=Depends(get_db)):
